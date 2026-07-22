@@ -1,0 +1,135 @@
+// ==========================================
+// 茶叶村 - 彝族主题色系
+// 彝族传统色: 红(#C41E1E) / 黑(#1A1A1A) / 黄(#FFD700)
+// ==========================================
+
+// 主题色
+$yi-red: #C41E1E;
+$yi-black: #1A1A1A;
+$yi-gold: #FFD700;
+$yi-dark-red: #8B0000;
+
+// 辅助色
+$tea-green: #2D5A27;
+$bg-light: #F5F0EB;
+$text-primary: #2C2C2C;
+$text-secondary: #666666;
+$text-muted: #999999;
+
+// Element Plus 主题覆盖
+:root {
+  --el-color-primary: #{$yi-red};
+  --el-color-primary-light-3: #d44a4a;
+  --el-color-primary-light-5: #e07676;
+  --el-color-primary-dark-2: #9d1818;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+  color: $text-primary;
+  background: $bg-light;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+// 滚动条美化
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+// 通用容器
+.page-container {
+  min-height: calc(100vh - 200px);
+  padding: 40px 0;
+}
+
+.content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+// 页面标题
+.page-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: $yi-black;
+  text-align: center;
+  margin-bottom: 12px;
+  position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: $yi-red;
+    margin: 12px auto 0;
+    border-radius: 2px;
+  }
+}
+
+.page-subtitle {
+  text-align: center;
+  color: $text-secondary;
+  font-size: 16px;
+  margin-bottom: 40px;
+}
+
+// 彝族纹样装饰条
+.yi-pattern-bar {
+  height: 8px;
+  background: repeating-linear-gradient(
+    90deg,
+    $yi-red 0px,
+    $yi-red 20px,
+    $yi-gold 20px,
+    $yi-gold 24px,
+    $yi-black 24px,
+    $yi-black 44px,
+    $yi-gold 44px,
+    $yi-gold 48px
+  );
+}
+
+// 卡片样式
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+// 响应式
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 24px;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .content-wrapper {
+    padding: 0 16px;
+  }
+}

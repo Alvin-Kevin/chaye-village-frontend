@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "https://iosdrgelpdig.sealoshzh.site/api/$1" },
+    { "source": "/((?!api).*)", "destination": "/index.html" }
+  ]
+}
