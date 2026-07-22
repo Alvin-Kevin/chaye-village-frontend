@@ -1,1 +1,0 @@
-import{r as e}from"./request-rE5kOGS0.js";const u={getList(t){return e.get("/products",{params:t})},getDetail(t){return e.get(`/products/${t}`)},getFeatured(){return e.get("/products/featured")}};export{u as p};

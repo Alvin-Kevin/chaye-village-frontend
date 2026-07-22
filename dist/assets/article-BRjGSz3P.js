@@ -1,1 +1,0 @@
-import{r as e}from"./request-rE5kOGS0.js";const i={getList(t){return e.get("/articles",{params:t})},getDetail(t){return e.get(`/articles/${t}`)},getPinned(){return e.get("/articles/pinned")},getCategories(){return e.get("/articles/categories")}};export{i as a};
