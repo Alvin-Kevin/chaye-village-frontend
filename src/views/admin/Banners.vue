@@ -89,7 +89,7 @@ async function fetchList() {
   loading.value = true
   try {
     const res = await request.get('/admin/banners')
-    list.value = res ?? []
+    list.value = res?.records ?? []
   } catch {
     ElMessage.error('获取Banner列表失败')
   } finally {

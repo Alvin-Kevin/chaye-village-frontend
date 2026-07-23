@@ -64,16 +64,13 @@ const stats = reactive({
 
 async function fetchStats() {
   try {
-    const [productsRes, articlesRes, spotsRes, bannersRes] = await Promise.all([
-      request.get('/admin/products?page=1&size=1'),
-      request.get('/admin/articles?page=1&size=1'),
-      request.get('/admin/spots?page=1&size=1'),
-      request.get('/admin/banners?page=1&size=1'),
-    ])
-    stats.products = productsRes?.total ?? 0
-    stats.articles = articlesRes?.total ?? 0
-    stats.spots = spotsRes?.total ?? 0
-    stats.banners = bannersRes?.total ?? 0
+    const res = await request.get('/admin/dashboard/overview')
+    if (res) {
+      stats.products = res.products ?? 0
+      stats.articles = res.articles ?? 0
+      stats.spots = res.spots ?? 0
+      stats.banners = res.banners ?? 0
+    }
   } catch {
     ElMessage.error('获取统计数据失败')
   }
