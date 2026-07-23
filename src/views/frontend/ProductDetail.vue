@@ -8,9 +8,17 @@
       </el-button>
 
       <div v-if="product" class="detail-content">
-        <!-- 封面图 -->
+        <!-- 图片画廊 -->
         <div class="cover-section">
-          <img :src="product.coverImage" :alt="product.name" class="cover-img" />
+          <template v-if="allImages.length > 1">
+            <el-carousel :interval="4000" arrow="always" indicator-position="none" height="480px">
+              <el-carousel-item v-for="(img, idx) in allImages" :key="idx">
+                <img :src="img" :alt="product.name" class="cover-img" />
+              </el-carousel-item>
+            </el-carousel>
+            <div class="gallery-counter">{{ currentSlide }} / {{ allImages.length }}</div>
+          </template>
+          <img v-else :src="product.coverImage" :alt="product.name" class="cover-img" />
         </div>
 
         <!-- 商品信息 -->
@@ -48,6 +56,7 @@ import type { Product } from '@/types'
 const route = useRoute()
 const product = ref<Product | null>(null)
 const loading = ref(false)
+const currentSlide = ref(1)
 
 const categoryLabels: Record<string, string> = {
   tea: '茶叶',
@@ -57,6 +66,22 @@ const categoryLabels: Record<string, string> = {
 
 const categoryLabel = computed(() => {
   return product.value ? (categoryLabels[product.value.category] || product.value.category) : ''
+})
+
+function parseImages(imagesStr: string): string[] {
+  if (!imagesStr) return []
+  try {
+    const arr = JSON.parse(imagesStr)
+    return Array.isArray(arr) ? arr : []
+  } catch { return [] }
+}
+
+const allImages = computed(() => {
+  if (!product.value) return []
+  const list: string[] = []
+  if (product.value.coverImage) list.push(product.value.coverImage)
+  const extras = parseImages(product.value.images)
+  return [...list, ...extras]
 })
 
 onMounted(async () => {
@@ -91,10 +116,23 @@ onMounted(async () => {
 }
 
 .cover-section {
+  position: relative;
+
   .cover-img {
     width: 100%;
     max-height: 480px;
     object-fit: cover;
+  }
+
+  .gallery-counter {
+    position: absolute;
+    bottom: 12px;
+    right: 16px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 13px;
   }
 }
 

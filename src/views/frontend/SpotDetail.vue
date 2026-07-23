@@ -8,9 +8,17 @@
       </el-button>
 
       <div v-if="spot" class="detail-content">
-        <!-- 封面图 -->
+        <!-- 图片画廊 -->
         <div class="cover-section">
-          <img :src="spot.coverImage" :alt="spot.name" class="cover-img" />
+          <template v-if="allImages.length > 1">
+            <el-carousel :interval="4000" arrow="always" indicator-position="none" height="480px">
+              <el-carousel-item v-for="(img, idx) in allImages" :key="idx">
+                <img :src="img" :alt="spot.name" class="cover-img" />
+              </el-carousel-item>
+            </el-carousel>
+            <div class="gallery-counter">{{ currentSlide }} / {{ allImages.length }}</div>
+          </template>
+          <img v-else :src="spot.coverImage" :alt="spot.name" class="cover-img" />
         </div>
 
         <!-- 景点信息 -->
@@ -43,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { ArrowLeft } from '@element-plus/icons-vue'
 import { spotApi } from '@/api/spot'
@@ -52,11 +60,28 @@ import type { Spot } from '@/types'
 const route = useRoute()
 const spot = ref<Spot | null>(null)
 const loading = ref(false)
+const currentSlide = ref(1)
 
 const parseTags = (tags: string): string[] => {
   if (!tags) return []
   return tags.split(',').map(t => t.trim()).filter(Boolean)
 }
+
+function parseImages(imagesStr: string): string[] {
+  if (!imagesStr) return []
+  try {
+    const arr = JSON.parse(imagesStr)
+    return Array.isArray(arr) ? arr : []
+  } catch { return [] }
+}
+
+const allImages = computed(() => {
+  if (!spot.value) return []
+  const list: string[] = []
+  if (spot.value.coverImage) list.push(spot.value.coverImage)
+  const extras = parseImages(spot.value.images)
+  return [...list, ...extras]
+})
 
 onMounted(async () => {
   const id = Number(route.params.id)
@@ -90,10 +115,23 @@ onMounted(async () => {
 }
 
 .cover-section {
+  position: relative;
+
   .cover-img {
     width: 100%;
     max-height: 480px;
     object-fit: cover;
+  }
+
+  .gallery-counter {
+    position: absolute;
+    bottom: 12px;
+    right: 16px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 13px;
   }
 }
 

@@ -19,6 +19,10 @@
         <ImageUpload v-model="form.coverImage" />
       </el-form-item>
 
+      <el-form-item label="图片集">
+        <MultiImageUpload v-model="form.images" />
+      </el-form-item>
+
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="标签" prop="tags">
@@ -47,6 +51,7 @@ import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import request from '@/api/request'
 import ImageUpload from '@/components/ImageUpload.vue'
+import MultiImageUpload from '@/components/MultiImageUpload.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -61,6 +66,7 @@ const form = reactive({
   summary: '',
   description: '',
   coverImage: '',
+  images: '[]',
   tags: '',
   sortOrder: 0,
 })
@@ -77,6 +83,7 @@ async function loadSpot(id: number) {
       form.summary = res.summary ?? ''
       form.description = res.description ?? ''
       form.coverImage = res.coverImage ?? ''
+      form.images = res.images ?? '[]'
       form.tags = res.tags ?? ''
       form.sortOrder = res.sortOrder
     }

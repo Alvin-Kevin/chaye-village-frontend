@@ -50,6 +50,10 @@
         <ImageUpload v-model="form.coverImage" />
       </el-form-item>
 
+      <el-form-item label="图片集">
+        <MultiImageUpload v-model="form.images" />
+      </el-form-item>
+
       <el-form-item label="首页推荐" prop="isFeatured">
         <el-switch v-model="form.isFeatured" />
       </el-form-item>
@@ -69,6 +73,7 @@ import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import request from '@/api/request'
 import ImageUpload from '@/components/ImageUpload.vue'
+import MultiImageUpload from '@/components/MultiImageUpload.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -86,6 +91,7 @@ const form = reactive({
   priceRef: 0,
   unit: '',
   coverImage: '',
+  images: '[]',
   isFeatured: false,
   sortOrder: 0,
 })
@@ -106,6 +112,7 @@ async function loadProduct(id: number) {
       form.priceRef = res.priceRef
       form.unit = res.unit ?? ''
       form.coverImage = res.coverImage ?? ''
+      form.images = res.images ?? '[]'
       form.isFeatured = res.isFeatured === 1
       form.sortOrder = res.sortOrder
     }

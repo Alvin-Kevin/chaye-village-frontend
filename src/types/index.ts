@@ -62,6 +62,7 @@ export interface Product {
   priceRef: number
   unit: string
   coverImage: string
+  images: string
   isFeatured: number
   status: number
   sortOrder: number
@@ -75,6 +76,7 @@ export interface Spot {
   summary: string
   description: string
   coverImage: string
+  images: string
   tags: string
   status: number
   sortOrder: number
