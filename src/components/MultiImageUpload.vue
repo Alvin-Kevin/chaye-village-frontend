@@ -86,8 +86,14 @@ const onSuccess: UploadProps['onSuccess'] = (response: any) => {
   }
 }
 
-const onError: UploadProps['onError'] = () => {
-  ElMessage.error('上传失败，请检查网络')
+const onError: UploadProps['onError'] = (err: any) => {
+  if (err?.status === 413) {
+    ElMessage.error('图片过大，请压缩后重试（不超过5MB）')
+  } else if (err?.status === 401 || err?.status === 403) {
+    ElMessage.error('登录过期，请重新登录')
+  } else {
+    ElMessage.error('上传失败: ' + (err?.message || '网络错误'))
+  }
 }
 
 function removeImage(index: number) {
