@@ -38,8 +38,8 @@
         <el-form-item label="副标题" prop="subtitle">
           <el-input v-model="form.subtitle" placeholder="请输入副标题" />
         </el-form-item>
-        <el-form-item label="图片地址" prop="imageUrl">
-          <el-input v-model="form.imageUrl" placeholder="请输入图片URL" />
+        <el-form-item label="图片" prop="imageUrl">
+          <ImageUpload v-model="form.imageUrl" />
         </el-form-item>
         <el-form-item label="链接地址" prop="linkUrl">
           <el-input v-model="form.linkUrl" placeholder="请输入链接URL" />
@@ -62,6 +62,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { Banner } from '@/types'
 import request from '@/api/request'
+import ImageUpload from '@/components/ImageUpload.vue'
 
 const list = ref<Banner[]>([])
 const loading = ref(false)

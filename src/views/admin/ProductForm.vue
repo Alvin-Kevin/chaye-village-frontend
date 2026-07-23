@@ -47,7 +47,7 @@
       </el-row>
 
       <el-form-item label="封面图片" prop="coverImage">
-        <el-input v-model="form.coverImage" placeholder="请输入图片URL" />
+        <ImageUpload v-model="form.coverImage" />
       </el-form-item>
 
       <el-form-item label="首页推荐" prop="isFeatured">
@@ -68,6 +68,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import request from '@/api/request'
+import ImageUpload from '@/components/ImageUpload.vue'
 
 const route = useRoute()
 const router = useRouter()
