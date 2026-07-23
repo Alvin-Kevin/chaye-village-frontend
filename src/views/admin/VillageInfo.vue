@@ -140,6 +140,7 @@ async function saveSection(section: string) {
       })
     }
     ElMessage.success('保存成功')
+    await loadSection(section)
   } catch {
     ElMessage.error('保存失败')
   } finally {
