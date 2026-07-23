@@ -4,7 +4,7 @@
     <section class="hero">
       <el-carousel height="500px" :interval="5000" arrow="always">
         <el-carousel-item v-for="b in banners" :key="b.id">
-          <div class="hero-slide" :style="{ background: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3))` }">
+          <div class="hero-slide" :style="{ backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${b.imageUrl})` }">
             <div class="hero-text">
               <h1>{{ b.title }}</h1>
               <p>{{ b.subtitle }}</p>
