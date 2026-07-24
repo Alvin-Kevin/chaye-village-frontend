@@ -121,7 +121,8 @@ onMounted(async () => {
   .cover-img {
     width: 100%;
     max-height: 480px;
-    object-fit: cover;
+    object-fit: contain;
+    background: #1a1a1a;
   }
 
   .gallery-counter {

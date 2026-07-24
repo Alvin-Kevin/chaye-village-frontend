@@ -88,7 +88,7 @@ onMounted(async () => {
   p { color: #999; font-size: 14px; }
 }
 .featured-section { margin-bottom: 48px; }
-.product-img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 12px; }
+.product-img { width: 100%; height: 180px; object-fit: contain; background: #f5f5f5; border-radius: 8px; margin-bottom: 12px; }
 .summary { color: #666; font-size: 14px; margin: 8px 0; }
 .price { color: #C41E1E; font-weight: 600; }
 @media (max-width: 768px) {
