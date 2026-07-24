@@ -92,7 +92,8 @@ function handleRemove() {
   .preview-image {
     width: 200px;
     height: 133px;
-    object-fit: cover;
+    object-fit: contain;
+    background: #f5f5f5;
     border-radius: 4px;
     border: 1px solid #dcdfe6;
   }

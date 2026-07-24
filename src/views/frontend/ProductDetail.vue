@@ -10,15 +10,23 @@
       <div v-if="product" class="detail-content">
         <!-- 图片画廊 -->
         <div class="cover-section">
+          <div class="cover-bg" :style="{ backgroundImage: `url(${allImages[currentSlideIndex] || product.coverImage})` }"></div>
+
           <template v-if="allImages.length > 1">
-            <el-carousel :interval="4000" arrow="always" indicator-position="none" height="480px">
+            <el-carousel
+              :interval="4000"
+              arrow="always"
+              indicator-position="none"
+              height="480px"
+              @change="onSlideChange"
+            >
               <el-carousel-item v-for="(img, idx) in allImages" :key="idx">
-                <img :src="img" :alt="product.name" class="cover-img" />
+                <img :src="img" :alt="product.name" class="cover-img" @click="openViewer(currentSlideIndex)" />
               </el-carousel-item>
             </el-carousel>
-            <div class="gallery-counter">{{ currentSlide }} / {{ allImages.length }}</div>
+            <div class="gallery-counter" @click="openViewer(currentSlideIndex)">{{ currentSlide }} / {{ allImages.length }}</div>
           </template>
-          <img v-else :src="product.coverImage" :alt="product.name" class="cover-img" />
+          <img v-else :src="product.coverImage" :alt="product.name" class="cover-img" @click="openViewer(0)" />
         </div>
 
         <!-- 商品信息 -->
@@ -43,6 +51,13 @@
       <el-empty v-if="!loading && !product" description="商品不存在" />
     </div>
     <div class="yi-pattern-bar"></div>
+
+    <ImageViewer
+      :visible="viewerVisible"
+      :images="allImages"
+      :initial-index="viewerIndex"
+      @close="viewerVisible = false"
+    />
   </div>
 </template>
 
@@ -51,12 +66,15 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { ArrowLeft } from '@element-plus/icons-vue'
 import { productApi } from '@/api/product'
+import ImageViewer from '@/components/ImageViewer.vue'
 import type { Product } from '@/types'
 
 const route = useRoute()
 const product = ref<Product | null>(null)
 const loading = ref(false)
-const currentSlide = ref(1)
+const currentSlideIndex = ref(0)
+const viewerVisible = ref(false)
+const viewerIndex = ref(0)
 
 const categoryLabels: Record<string, string> = {
   tea: '茶叶',
@@ -67,6 +85,8 @@ const categoryLabels: Record<string, string> = {
 const categoryLabel = computed(() => {
   return product.value ? (categoryLabels[product.value.category] || product.value.category) : ''
 })
+
+const currentSlide = computed(() => currentSlideIndex.value + 1)
 
 function parseImages(imagesStr: string): string[] {
   if (!imagesStr) return []
@@ -83,6 +103,15 @@ const allImages = computed(() => {
   const extras = parseImages(product.value.images)
   return [...list, ...extras]
 })
+
+function onSlideChange(index: number) {
+  currentSlideIndex.value = index
+}
+
+function openViewer(index: number) {
+  viewerIndex.value = index
+  viewerVisible.value = true
+}
 
 onMounted(async () => {
   const id = Number(route.params.id)
@@ -117,23 +146,43 @@ onMounted(async () => {
 
 .cover-section {
   position: relative;
+  overflow: hidden;
+
+  .cover-bg {
+    position: absolute;
+    top: -12px; left: -12px; right: -12px; bottom: -12px;
+    background-size: cover;
+    background-position: center;
+    filter: blur(30px);
+    opacity: 0.55;
+    transition: background-image 0.4s ease;
+  }
 
   .cover-img {
+    position: relative;
+    z-index: 1;
     width: 100%;
     max-height: 480px;
     object-fit: contain;
-    background: #1a1a1a;
+    cursor: pointer;
+  }
+
+  :deep(.el-carousel) {
+    position: relative;
+    z-index: 1;
   }
 
   .gallery-counter {
     position: absolute;
     bottom: 12px;
     right: 16px;
+    z-index: 2;
     background: rgba(0, 0, 0, 0.55);
     color: #fff;
     padding: 4px 12px;
     border-radius: 12px;
     font-size: 13px;
+    cursor: pointer;
   }
 }
 
